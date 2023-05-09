@@ -1,0 +1,6 @@
+# 项目排除路径
+/exam-admin/target/
+/exam-api-commons/target/
+/exam-start/target/
+/exam-student/target/
+/exam-system/target/

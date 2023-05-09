@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sias.system.mapper.SysUserMapper">
+
+    <resultMap id="BaseResultMap" type="com.sias.commons.model.SysUser">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="phoneNumber" column="phone_number" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="CHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="sex" column="sex" jdbcType="VARCHAR"/>
+        <result property="birthDay" column="birth_day" jdbcType="DATE"/>
+        <result property="realName" column="real_name" jdbcType="VARCHAR"/>
+        <result property="deleted" column="deleted" jdbcType="BIT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id
+        ,username,password,
+        avatar,email,phone_number,status,create_time,
+        update_time,remark,sex,
+        birth_day,real_name,deleted
+    </sql>
+    <insert id="insertSelective">
+        insert into sys_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="avatar != null">
+                avatar,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="phoneNumber != null">
+                phone_number,
+            </if>
+            <if test="birthDay != null">
+                birth_day,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="realName != null">
+                real_name,
+            </if>
+            <if test="deleted != null">
+                deleted,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="username != null">
+                #{username},
+            </if>
+            <if test="password != null">
+                #{password},
+            </if>
+            <if test="avatar != null">
+                #{avatar},
+            </if>
+            <if test="email != null">
+                #{email},
+            </if>
+            <if test="phoneNumber != null">
+                #{phoneNumber},
+            </if>
+            <if test="birthDay != null">
+                #{birthDay},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime},
+            </if>
+            <if test="remark != null">
+                #{remark},
+            </if>
+            <if test="sex != null">
+                #{sex},
+            </if>
+            <if test="realName != null">
+                #{realName},
+            </if>
+            <if test="deleted != null">
+                #{deleted},
+            </if>
+        </trim>
+    </insert>
+    <insert id="save" parameterType="com.sias.commons.model.SysUser">
+        INSERT INTO sys_user
+        (username,password,
+        avatar,email,phone_number,
+        create_time,
+        update_time,remark,sex,
+        birth_day,real_name)
+        VALUES
+        <foreach collection="userList" separator="," item="item">
+            (#{item.username},#{item.password},#{item.avatar},#{item.email},
+            #{item.phoneNumber},#{item.createTime},#{item.updateTime},
+            #{item.remark},#{item.sex},#{item.birthDay},#{item.realName})
+        </foreach>
+    </insert>
+    <select id="selectByPrimaryKey" resultType="com.sias.commons.model.SysUser">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_user where id = #{id}
+    </select>
+    <select id="selectByUserName" resultType="com.sias.commons.model.SysUser">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_user where deleted = 0 and username = #{username}
+    </select>
+    <select id="page" resultType="com.sias.commons.model.SysUser"
+            parameterType="com.sias.system.VM.UserSelectRequestVm">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_user where deleted = 0
+        <if test="username !=null">
+            and username like "%" #{username} "%"
+        </if>
+        <if test="realName !=null">
+            and real_name like "%" #{realName} "%"
+        </if>
+    </select>
+    <select id="selectByUserIds" resultType="com.sias.commons.model.SysUser">
+        SELECT
+        <include refid="Base_Column_List"/>
+        from sys_user WHERE id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+
+    <select id="selectStudentsByRoleId" resultType="com.sias.commons.model.SysUser" parameterType="com.sias.system.VM.UserSelectRequestVm">
+        SELECT
+        sys_user.id
+        ,sys_user.username,
+        email,phone_number,create_time,
+        remark,sex,
+        birth_day,real_name
+        from sys_user,sys_user_role WHERE sys_user.id=sys_user_role.user_id AND role_id = #{roleId}
+        <if test="username !=null">
+            and sys_user.username like "%" #{username} "%"
+        </if>
+        <if test="realName !=null">
+            and real_name like "%" #{realName} "%"
+        </if>
+    </select>
+    <update id="updateByPrimaryKeySelective">
+        update sys_user
+        <set>
+            <if test="username != null">
+                username = #{username},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar},
+            </if>
+            <if test="realName != null">
+                real_name = #{realName},
+            </if>
+            <if test="email != null">
+                email = #{email},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted},
+            </if>
+            <if test="birthDay != null">
+                birth_day = #{birthDay},
+            </if>
+            <if test="phoneNumber != null">
+                phone_number = #{phoneNumber},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>

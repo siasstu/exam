@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sias.admin.mapper.QuestionMapper">
+
+    <resultMap id="BaseResultMap" type="com.sias.admin.domain.Question">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="questionType" column="question_type" jdbcType="INTEGER"/>
+            <result property="courseId" column="course_id" jdbcType="INTEGER"/>
+            <result property="correct" column="correct" jdbcType="VARCHAR"/>
+            <result property="infoTextContentId" column="info_text_content_id" jdbcType="INTEGER"/>
+            <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="deleted" column="deleted" jdbcType="BIT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,question_type,course_id,
+        correct,info_text_content_id,create_user,
+        status,create_time,deleted
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from question
+        where id = #{id}
+    </select>
+    <insert id="insertSelective" parameterType="com.sias.admin.domain.Question">
+        insert into question
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="questionType != null">
+                question_type,
+            </if>
+            <if test="courseId != null">
+                course_id,
+            </if>
+            <if test="correct != null">
+                correct,
+            </if>
+            <if test="infoTextContentId != null">
+                info_text_content_id,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="deleted != null">
+                deleted,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="questionType != null">
+                #{questionType,jdbcType=INTEGER},
+            </if>
+            <if test="courseId != null">
+                #{courseId,jdbcType=INTEGER},
+            </if>
+            <if test="correct != null">
+                #{correct,jdbcType=VARCHAR},
+            </if>
+            <if test="infoTextContentId != null">
+                #{infoTextContentId,jdbcType=INTEGER},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleted != null">
+                #{deleted,jdbcType=BIT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective">
+        update question
+        <set>
+            <if test="questionType != null">
+                question_type = #{questionType,jdbcType=INTEGER},
+            </if>
+            <if test="courseId != null">
+                course_id = #{courseId,jdbcType=INTEGER},
+            </if>
+            <if test="correct != null">
+                correct = #{correct,jdbcType=VARCHAR},
+            </if>
+            <if test="infoTextContentId != null">
+                info_text_content_id = #{infoTextContentId,jdbcType=INTEGER},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted,jdbcType=BIT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="page" resultMap="BaseResultMap" parameterType="com.sias.admin.vm.question.QuestionPageRequestVM">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM question
+        <where>
+            and deleted=0
+            <if test="id != null ">
+                and id= #{id}
+            </if>
+            <if test="courseId != null ">
+                and course_id= #{courseId}
+            </if>
+            <if test="questionType != null ">
+                and question_type= #{questionType}
+            </if>
+        </where>
+    </select>
+    <select id="selectByIds" resultType="com.sias.admin.domain.Question">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM question where id in
+        <foreach item="id" collection="ids" open="(" separator=","
+                 close=")">
+            #{id}
+        </foreach>
+    </select>
+    <select id="selectByQuestionCourseId" resultType="com.sias.admin.domain.Question">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM question where deleted=0  and course_id = #{courseId}
+    </select>
+</mapper>

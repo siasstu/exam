@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sias.admin.mapper.SubjectMapper">
+
+    <resultMap id="BaseResultMap" type="com.sias.admin.domain.Subject">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <id property="semesterId" column="semester_id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="deleted" column="deleted" jdbcType="BIT"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id
+        ,name,create_time,
+        update_time,deleted,remark,
+        create_user,semester_id
+    </sql>
+    <select id="page" resultType="com.sias.admin.domain.Subject"
+            parameterType="com.sias.admin.vm.subject.SubjectSelectVM">
+        select *
+        from subject
+        where deleted = 0
+        <if test="name !=null">
+            and name like "%" #{name} "%"
+        </if>
+        <if test="semesterId !=null">
+            and semester_id=#{semesterId}
+        </if>
+        <if test="username !=null">
+            and create_user=#{username}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultType="com.sias.admin.domain.Subject">
+        select *
+        from subject
+        where id = #{id};
+    </select>
+    <select id="selectByIds" resultType="com.sias.admin.domain.Subject">
+        select
+        <include refid="Base_Column_List"/>
+        from subject where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+    <select id="list" resultType="com.sias.admin.vm.subject.SubjectVM">
+        select
+        <include refid="Base_Column_List"/>
+        from subject
+        <if test="username!=null">
+            where create_user=#{username}
+        </if>
+    </select>
+    <insert id="insertSelective">
+        insert into subject
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="deleted != null">
+                deleted,
+            </if>
+            <if test="semesterId != null">
+                semester_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="createUser != null">
+                #{createUser},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime},
+            </if>
+            <if test="remark != null">
+                #{remark},
+            </if>
+            <if test="deleted != null">
+                #{deleted},
+            </if>
+            <if test="semesterId != null">
+                #{semesterId},
+            </if>
+        </trim>
+    </insert>
+    <delete id="deleteByPrimaryKey">
+        delete
+        from subject
+        where id = #{id}
+    </delete>
+    <update id="updateByPrimaryKeySelective">
+        update subject
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            <if test="semesterId != null">
+                semester_id = #{semesterId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>

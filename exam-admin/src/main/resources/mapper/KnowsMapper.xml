@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sias.admin.mapper.KnowsMapper">
+
+    <resultMap id="BaseResultMap" type="com.sias.admin.domain.Knows">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="sectionId" column="section_id" jdbcType="INTEGER"/>
+            <result property="describe" column="describe" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,section_id,
+        describe,status
+    </sql>
+    <select id="selectBySectionId" resultType="com.sias.admin.domain.Knows">
+        select * from knows where section_id in <foreach collection="ids" item="id" open="(" separator="," close=")">#{id}</foreach>
+    </select>
+</mapper>

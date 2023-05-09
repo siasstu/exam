@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sias.admin.mapper.ClassStuMapper">
+
+    <resultMap id="BaseResultMap" type="com.sias.admin.domain.ClassStu">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="classId" column="class_id" jdbcType="INTEGER"/>
+            <result property="username" column="username" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,class_id,username
+    </sql>
+    <insert id="addStuToClass">
+        insert into class_stu(class_id,username) values (#{classId},#{username})
+    </insert>
+    <delete id="deleteByUsernameAndClassId">
+        delete from class_stu where class_Id = #{classId} and username = #{username}
+    </delete>
+    <select id="selectByClassId" resultType="com.sias.admin.domain.ClassStu">
+        select <include refid="Base_Column_List"/> from class_stu where class_id=#{id}
+    </select>
+    <select id="selectStudentsByClassId" resultType="com.sias.commons.model.SysUser" parameterType="com.sias.system.VM.UserSelectRequestVm">
+        select
+        sys_user.id
+        ,sys_user.username,
+        email,phone_number,create_time,
+        remark,sex,
+        birth_day,real_name
+        from class_stu,sys_user where class_stu.username=sys_user.username and class_id=#{classId}
+        <if test="username !=null">
+            and sys_user.username like "%" #{username} "%"
+        </if>
+        <if test="realName !=null">
+            and real_name like "%" #{realName} "%"
+        </if>
+    </select>
+</mapper>

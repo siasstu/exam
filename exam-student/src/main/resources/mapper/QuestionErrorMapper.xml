@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sias.admin.mapper.QuestionErrorMapper">
+
+    <resultMap id="BaseResultMap" type="com.sias.admin.domain.QuestionError">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="questionId" column="question_id" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="correct" column="correct" jdbcType="VARCHAR"/>
+        <result property="answer" column="answer" jdbcType="VARCHAR"/>
+        <result property="score" column="score" jdbcType="VARCHAR"/>
+        <result property="questionScore" column="question_score" jdbcType="VARCHAR"/>
+        <result property="paperId" column="paper_id" jdbcType="INTEGER"/>
+        <result property="deleted" column="deleted" jdbcType="BIT"/>
+        <result property="idcard" column="idcard" jdbcType="VARCHAR"/>
+        <result property="courseId" column="course_id" jdbcType="INTEGER"/>
+        <result property="examGradeId" column="exam_grade_id" jdbcType="INTEGER"/>
+        <result property="itemOrder" column="itemOrder" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id
+        ,question_id,create_time,
+        correct,answer,score,
+        question_score,paper_id,deleted,
+        idcard,course_id,exam_grade_id,
+        itemOrder
+    </sql>
+    <select id="page" resultType="com.sias.admin.domain.QuestionError">
+        select
+        <include refid="Base_Column_List"/>
+        from question_error where deleted = 0
+        <if test="idcard != null">and idcard = #{idcard}</if>
+        <if test="courseId != null">and course_id = #{courseId}</if>
+    </select>
+    <select id="selectByExamGradeId" resultType="com.sias.admin.domain.KeyValue">
+        select itemOrder as name, count(*) AS value
+        from question_error
+        where deleted = 0 and exam_grade_id = #{examGradeId}
+        group by itemOrder
+    </select>
+    <insert id="insertSelective">
+        insert into question_error
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="questionId != null">
+                question_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="courseId != null">
+                course_id,
+            </if>
+            <if test="correct != null">
+                correct,
+            </if>
+            <if test="answer != null">
+                answer,
+            </if>
+            <if test="score != null">
+                score,
+            </if>
+            <if test="questionScore != null">
+                question_score,
+            </if>
+            <if test="paperId != null">
+                paper_id,
+            </if>
+            <if test="idcard != null">
+                idcard,
+            </if>
+            <if test="deleted != null">
+                deleted,
+            </if>
+            <if test="examGradeId != null">
+                exam_grade_id,
+            </if>
+            <if test="itemOrder != null">
+                itemOrder,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="questionId != null">
+                #{questionId},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+            <if test="courseId != null">
+                #{courseId},
+            </if>
+            <if test="correct != null">
+                #{correct},
+            </if>
+            <if test="answer != null">
+                #{answer},
+            </if>
+            <if test="score != null">
+                #{score},
+            </if>
+            <if test="questionScore != null">
+                #{questionScore},
+            </if>
+            <if test="paperId != null">
+                #{paperId},
+            </if>
+            <if test="idcard != null">
+                #{idcard},
+            </if>
+            <if test="deleted != null">
+                #{deleted},
+            </if>
+            <if test="examGradeId != null">
+                #{examGradeId},
+            </if>
+            <if test="itemOrder != null">
+                #{itemOrder},
+            </if>
+        </trim>
+    </insert>
+</mapper>

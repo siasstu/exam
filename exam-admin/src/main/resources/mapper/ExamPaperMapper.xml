@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sias.admin.mapper.ExamPaperMapper">
+
+    <resultMap id="BaseResultMap" type="com.sias.admin.domain.ExamPaper">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="courseId" column="course_id" jdbcType="INTEGER"/>
+            <result property="score" column="score" jdbcType="INTEGER"/>
+            <result property="questionCount" column="question_count" jdbcType="INTEGER"/>
+            <result property="suggestTime" column="suggest_time" jdbcType="INTEGER"/>
+            <result property="frameTextContentId" column="frame_text_content_id" jdbcType="INTEGER"/>
+            <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="deleted" column="deleted" jdbcType="BIT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,course_id,
+        score,question_count,suggest_time,
+        frame_text_content_id,create_user,create_time,
+        deleted
+    </sql>
+    <select id="page" resultMap="BaseResultMap" parameterType="com.sias.admin.vm.paper.ExamPaperPageRequestVM">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM exam_paper
+        <where>
+            and deleted=0
+            <if test="id != null ">
+                and id= #{id}
+            </if>
+            <if test="courseId != null ">
+                and course_id= #{courseId}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertSelective" parameterType="com.sias.admin.domain.ExamPaper" useGeneratedKeys="true" keyProperty="id">
+        insert into exam_paper
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="courseId != null">
+                course_id,
+            </if>
+            <if test="score != null">
+                score,
+            </if>
+            <if test="questionCount != null">
+                question_count,
+            </if>
+            <if test="suggestTime != null">
+                suggest_time,
+            </if>
+            <if test="frameTextContentId != null">
+                frame_text_content_id,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="deleted != null">
+                deleted,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="courseId != null">
+                #{courseId,jdbcType=INTEGER},
+            </if>
+            <if test="score != null">
+                #{score,jdbcType=INTEGER},
+            </if>
+            <if test="questionCount != null">
+                #{questionCount,jdbcType=INTEGER},
+            </if>
+            <if test="suggestTime != null">
+                #{suggestTime,jdbcType=INTEGER},
+            </if>
+            <if test="frameTextContentId != null">
+                #{frameTextContentId,jdbcType=INTEGER},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleted != null">
+                #{deleted,jdbcType=BIT},
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.sias.admin.domain.ExamPaper">
+        update exam_paper
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="courseId != null">
+                course_id = #{courseId},
+            </if>
+            <if test="score != null">
+                score = #{score,jdbcType=INTEGER},
+            </if>
+            <if test="questionCount != null">
+                question_count = #{questionCount,jdbcType=INTEGER},
+            </if>
+            <if test="suggestTime != null">
+                suggest_time = #{suggestTime,jdbcType=INTEGER},
+            </if>
+            <if test="frameTextContentId != null">
+                frame_text_content_id = #{frameTextContentId,jdbcType=INTEGER},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted,jdbcType=BIT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from exam_paper
+        where deleted= 0 and id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectPaper" resultType="com.sias.admin.domain.ExamPaper">
+        select
+        <include refid="Base_Column_List" />
+        from exam_paper where deleted = 0
+    </select>
+</mapper>

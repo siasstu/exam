@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sias.system.mapper.SysMenuMapper">
+
+    <resultMap id="BaseResultMap" type="com.sias.commons.model.SysMenu">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="icon" column="icon" jdbcType="VARCHAR"/>
+            <result property="parentId" column="parent_id" jdbcType="BIGINT"/>
+            <result property="orderNum" column="order_num" jdbcType="INTEGER"/>
+            <result property="path" column="path" jdbcType="VARCHAR"/>
+            <result property="component" column="component" jdbcType="VARCHAR"/>
+            <result property="menuType" column="menu_type" jdbcType="CHAR"/>
+            <result property="perms" column="perms" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,icon,
+        parent_id,order_num,path,
+        component,menu_type,perms,
+        create_time,update_time,remark
+    </sql>
+    <delete id="removeById">
+        delete from sys_menu where id = #{id}
+    </delete>
+    <select id="selectByRoleId" resultType="com.sias.commons.model.SysMenu">
+        SELECT * FROM sys_menu WHERE id IN (SELECT menu_id FROM sys_role_menu WHERE role_id = #{id})
+    </select>
+    <select id="list" resultType="com.sias.commons.model.SysMenu">
+        select <include refid="Base_Column_List"/> from sys_menu order by order_num
+    </select>
+    <select id="count" resultType="java.lang.Integer">
+        select count(*) from sys_menu WHERE parent_id = #{id}
+    </select>
+    <insert id="insertSelective" >
+        insert into sys_menu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="icon != null">
+                icon,
+            </if>
+            <if test="parentId != null">
+                parent_id,
+            </if>
+            <if test="orderNum != null">
+                 order_num,
+            </if>
+            <if test="path != null">
+                path,
+            </if>
+            <if test="component != null">
+                component,
+            </if>
+            <if test="menuType != null">
+                menu_type,
+            </if>
+            <if test="perms != null">
+                perms,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="icon != null">
+                #{icon},
+            </if>
+            <if test="parentId != null">
+                #{parentId},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum},
+            </if>
+            <if test="path != null">
+                #{path},
+            </if>
+            <if test="component != null">
+                #{component},
+            </if>
+            <if test="menuType != null">
+                #{menuType},
+            </if>
+            <if test="perms != null">
+                #{perms},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime},
+            </if>
+            <if test="remark != null">
+                #{remark},
+            </if>
+        </trim>
+    </insert>
+<select id="selectByPrimaryKey" resultType="com.sias.commons.model.SysMenu">
+    select <include refid="Base_Column_List"/> from sys_menu where id =#{id}
+</select>
+    <update id="updateByPrimaryKeySelective">
+    update sys_menu <set>
+    <if test="name != null">
+        name = #{name},
+    </if>
+    <if test="icon != null">
+        icon = #{icon},
+    </if>
+    <if test="parentId != null">
+        parent_id = #{parentId},
+    </if>
+    <if test="orderNum != null">
+        order_num = #{orderNum},
+    </if>
+    <if test="path != null">
+        path = #{path},
+    </if>
+    <if test="component != null">
+        component = #{component},
+    </if>
+    <if test="createTime != null">
+        create_time = #{createTime},
+    </if>
+    <if test="updateTime != null">
+        update_time = #{updateTime},
+    </if>
+    <if test="perms != null">
+        perms = #{perms},
+    </if>
+    <if test="remark != null">
+        remark = #{remark},
+    </if>
+    <if test="menuType != null">
+        menu_type = #{menuType},
+    </if>
+</set>
+    where id = #{id}
+</update>
+</mapper>

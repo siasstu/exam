@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sias.system.mapper.SysLoginLogMapper">
+
+    <resultMap id="BaseResultMap" type="com.sias.commons.model.SysLoginLog">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="ip" column="ip" jdbcType="VARCHAR"/>
+        <result property="os" column="os" jdbcType="VARCHAR"/>
+        <result property="location" column="location" jdbcType="VARCHAR"/>
+        <result property="browser" column="browser" jdbcType="VARCHAR"/>
+        <result property="info" column="info" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id
+        ,create_time,username,ip,os,info,status,location,browser
+    </sql>
+
+    <insert id="insertSelective" parameterType="com.sias.commons.model.SysLoginLog">
+        insert into sys_login_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="ip != null">
+                ip,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="info != null">
+                info,
+            </if>
+            <if test="location != null">
+                location,
+            </if>
+            <if test="os != null">
+                os,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+            <if test="browser != null">
+                browser,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+            <if test="ip != null">
+                #{ip},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="info != null">
+                #{info},
+            </if>
+            <if test="location != null">
+                #{location},
+            </if>
+            <if test="os != null">
+                #{os},
+            </if>
+            <if test="username != null">
+                #{username},
+            </if>
+            <if test="browser != null">
+                #{browser},
+            </if>
+        </trim>
+    </insert>
+    <select id="page" resultType="com.sias.commons.model.SysLoginLog" parameterType="com.sias.system.VM.LogsSelectRequestVm">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_login_log <if test="username != null"> where  username like "%" #{username} "%" and </if> order by id desc
+    </select>
+    <delete id="deleteByPrimaryKey">
+        delete
+        from sys_login_log
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteByIds">
+        delete
+        from sys_login_log
+        where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

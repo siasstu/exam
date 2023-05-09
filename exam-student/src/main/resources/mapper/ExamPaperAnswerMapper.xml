@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sias.admin.mapper.ExamPaperAnswerMapper">
+
+    <resultMap id="BaseResultMap" type="com.sias.admin.domain.ExamPaperAnswer">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="paperId" column="paper_id" jdbcType="INTEGER"/>
+        <result property="paperName" column="paper_name" jdbcType="VARCHAR"/>
+        <result property="courseId" column="course_id" jdbcType="INTEGER"/>
+        <result property="gradeId" column="grade_id" jdbcType="INTEGER"/>
+        <result property="userScore" column="user_score" jdbcType="INTEGER"/>
+        <result property="paperScore" column="paper_score" jdbcType="INTEGER"/>
+        <result property="questionCorrect" column="question_correct" jdbcType="INTEGER"/>
+        <result property="questionCount" column="question_count" jdbcType="INTEGER"/>
+        <result property="doTime" column="do_time" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="textContentId" column="text_content_id" jdbcType="INTEGER"/>
+        <result property="examGradeId" column="exam_grade_id" jdbcType="INTEGER"/>
+        <result property="deleted" column="deleted" jdbcType="BIT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id
+        ,paper_id,paper_name,
+        course_id,grade_id,user_score,
+        paper_score,question_correct,question_count,
+        do_time,status,user_id,
+        create_time,text_content_id,exam_grade_id,
+        deleted
+    </sql>
+    <insert id="insertSelective" parameterType="com.sias.admin.domain.CourseclassStu">
+        insert into exam_paper_answer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="paperId != null">
+                paper_id,
+            </if>
+            <if test="gradeId != null">
+                grade_id,
+            </if>
+            <if test="paperName != null">
+                paper_name,
+            </if>
+            <if test="courseId != null">
+                course_id,
+            </if>
+            <if test="userScore != null">
+                user_score,
+            </if>
+            <if test="paperScore != null">
+                paper_score,
+            </if>
+            <if test="questionCorrect != null">
+                question_correct,
+            </if>
+            <if test="questionCount != null">
+                question_count,
+            </if>
+            <if test="doTime != null">
+                do_time,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="textContentId != null">
+                text_content_id,
+            </if>
+            <if test="examGradeId != null">
+                exam_grade_id,
+            </if>
+            <if test="deleted != null">
+                deleted,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="paperId != null">
+                #{paperId},
+            </if>
+            <if test="gradeId != null">
+                #{gradeId},
+            </if>
+            <if test="paperName != null">
+                #{paperName},
+            </if>
+            <if test="courseId != null">
+                #{courseId},
+            </if>
+            <if test="userScore != null">
+                #{userScore},
+            </if>
+            <if test="paperScore != null">
+                #{paperScore},
+            </if>
+            <if test="questionCorrect != null">
+                #{questionCorrect},
+            </if>
+            <if test="questionCount != null">
+                #{questionCount},
+            </if>
+            <if test="doTime != null">
+                #{doTime},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+            <if test="textContentId != null">
+                #{textContentId},
+            </if>
+            <if test="examGradeId != null">
+                #{examGradeId},
+            </if>
+            <if test="deleted != null">
+                #{deleted},
+            </if>
+        </trim>
+    </insert>
+    <delete id="deleteByPrimaryKey"></delete>
+    <update id="updateByPrimaryKeySelective">
+        update exam_paper_answer
+        <set>
+            <if test="paperId != null">
+                paper_id = #{paperId},
+            </if>
+            <if test="paperName != null">
+                paper_name = #{paperName},
+            </if>
+            <if test="courseId != null">
+                course_id = #{courseId,jdbcType=INTEGER},
+            </if>
+            <if test="userScore != null">
+                user_score = #{userScore,jdbcType=INTEGER},
+            </if>
+            <if test="paperScore != null">
+                paper_score = #{paperScore},
+            </if>
+            <if test="questionCorrect != null">
+                question_correct = #{questionCorrect,jdbcType=INTEGER},
+            </if>
+            <if test="questionCount != null">
+                question_count = #{questionCount,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=INTEGER},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted,jdbcType=BIT},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="doTime != null">
+                do_time = #{doTime},
+            </if>
+            <if test="textContentId != null">
+                text_content_id = #{textContentId},
+            </if>
+            <if test="examGradeId != null">
+                exam_grade_id = #{examGradeId},
+            </if>
+            <if test="gradeId != null">
+                grade_id = #{gradeId},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey"></update>
+
+    <select id="selectByGradeId" resultType="com.sias.admin.domain.ExamPaperAnswer">
+        select <include refid="Base_Column_List"/> from exam_paper_answer where deleted = 0 and grade_id = #{gradeId}
+    </select>
+    <select id="selectByPrimaryKey" resultType="com.sias.admin.domain.ExamPaperAnswer">
+        select <include refid="Base_Column_List"/>
+        from exam_paper_answer where deleted = 0 and id = #{id}
+    </select>
+
+    <select id="page" resultType="com.sias.admin.domain.ExamPaperAnswer">
+        select <include refid="Base_Column_List"/> from exam_paper_answer <where>
+        deleted=0
+        <if test="status != null ">
+            and  status= #{status}
+        </if>
+        <if test="examGradeId != null ">
+            and exam_grade_id= #{examGradeId}
+        </if>
+        <if test="examGradeId != null ">
+            and grade_id= #{gradeId}
+        </if>
+        <if test="idcard != null ">
+            and user_id= #{idcard}
+        </if>
+    </where>
+    </select>
+    <select id="select" resultType="com.sias.admin.domain.ExamPaperAnswer">
+        select <include refid="Base_Column_List"/> from exam_paper_answer where deleted= 0 and exam_grade_id = #{examGradeId} and grade_id = #{gradeId}
+    </select>
+    <select id="selectByExamGradeIdAndIdcard" resultType="com.sias.admin.domain.ExamPaperAnswer">
+        select <include refid="Base_Column_List"/> from   exam_paper_answer where deleted= 0 and exam_grade_id = #{examGradeId} and user_id = #{idcard}
+    </select>
+    <select id="selectByIdcard" resultType="com.sias.admin.domain.ExamPaperAnswer">
+        select <include refid="Base_Column_List"/> from exam_paper_answer where deleted = 0  <if test="idcard!=null">
+        and  user_id = #{idcard}
+    </if>
+    </select>
+</mapper>
